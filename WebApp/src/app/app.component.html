@@ -1,0 +1,45 @@
+Movington
+
+<section *ngIf="authenticationReady$ | async">
+  <button
+    *ngIf="showLoginButton$ | async"
+    (click)="login()"
+  >
+    Login
+  </button>
+
+  <button
+    *ngIf="showLogoutButton$ | async"
+    (click)="logout()"
+  >
+    Logout
+  </button>
+</section>
+
+<ng-container *ngIf="currentUser$ | async as currentUser; else noUserTpl">
+  <div>
+    <h4>
+      Username
+    </h4>
+
+    <p>
+      {{ currentUser.username }}
+    </p>
+
+    <h4>
+      E-mail
+    </h4>
+
+    <p>
+      {{ currentUser.email }}
+    </p>
+  </div>
+</ng-container>
+
+<ng-template #noUserTpl>
+  <p>
+    No user
+  </p>
+</ng-template>
+
+<router-outlet></router-outlet>
