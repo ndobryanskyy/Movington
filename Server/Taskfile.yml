@@ -1,0 +1,41 @@
+version: "3"
+
+vars:
+  EF_CORE_TARGET_OPTIONS: "--project Movington/Movington.csproj"
+
+tasks:
+  init:
+    desc: Restores dotnet tools
+    cmds:
+      - dotnet tool restore
+
+  migrations:add:
+    desc: Adds new EF migration using specified 'name'
+    cmds:
+      - dotnet dotnet-ef migrations add {{ .name }} {{ .EF_CORE_TARGET_OPTIONS }} -o Database/Migrations
+
+  migrations:remove:
+    desc: Removes last EF migration
+    cmds:
+      - dotnet ef migrations remove {{ .EF_CORE_TARGET_OPTIONS }}
+
+  database:run:
+    desc: Runs PostgreSQL database locally in Docker
+    cmds:
+      - docker run --name movington-db -e POSTGRES_PASSWORD=P@ssw0rd -e POSTGRES_DB=movington -p 5432:5432 -d postgres
+
+  database:update:
+    desc: Updates DB to the latest EF migration
+    cmds:
+      - dotnet dotnet-ef database update {{ .EF_CORE_TARGET_OPTIONS }}
+
+  database:drop:
+    desc: Drops the database
+    cmds:
+      - dotnet dotnet-ef database drop {{ .EF_CORE_TARGET_OPTIONS }}
+
+  database:recreate:
+    desc: Drops and updates the database
+    cmds:
+      - task: database:drop
+      - task: database:update

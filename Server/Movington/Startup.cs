@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Movington.Database;
 using Movington.Security;
 using Movington.Swagger;
 
@@ -25,6 +26,10 @@ namespace Movington
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddConfiguredDatabase(Configuration);
+
+            services.AddAutoMapper(options => options.AddMaps(GetType().Assembly));
+
             services.AddConfiguredSecurity(Configuration);
 
             services.AddControllers();

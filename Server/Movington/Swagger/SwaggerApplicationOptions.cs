@@ -10,11 +10,11 @@ namespace Movington.Swagger
 
         internal sealed class SecurityOptions
         {
-            public Uri OpenIdConnectUrl { get; set; }
+            public Uri OpenIdConnectUrl { get; set; } = default!;
 
-            public string ClientId { get; set; }
+            public string ClientId { get; set; } = default!;
 
-            public string Audience { get; set; }
+            public string Audience { get; set; } = default!;
         }
     }
 }
